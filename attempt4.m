@@ -38,7 +38,7 @@ t_eff_span = t_set_span(end):dt:(treact + tfill+tw + tset+teff);
 
 
 
-fill_in = [0.5 0.5 0.5] ;
+fill_in = [0.5 0.5 0.6] ;
 
 
 [t_fill, conc_fill] = ode15s(@dfill, t_fill_span, fill_in);
