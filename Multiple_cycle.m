@@ -25,30 +25,49 @@ treact = 290 ;
 tset = 45 ; 
 dt = 0.1;
 vvfin = 0.5;
+t_eff_span = tfill + teff + tw + treact + tset;
 
 dt = 0.01;
 
-conc_eff = [0.5 0 0.5] ; %set up for initial conditions X & V/VVF
+conc_eff = [0.5 0.5] ; %set up for initial conditions X & V/VVF
 conc_wit = [ 0 0.5 0] ;%set up for initial conditions S
 
 
-no_of_cycles = 100;
+no_of_cycles = 50;
 
-t_fill_span =   0:dt:tfill;
-t_reac_span = tfill:dt:(treact + tfill);
-t_w_span = t_reac_span(end):dt:(treact + tfill+tw);
-t_set_span = t_w_span(end):dt:(treact + tfill+tw + tset);
-t_eff_span = t_set_span(end):dt:(treact + tfill+tw + tset+teff);
-
-for s = 1:no_of_cycles
+ t_fill_span =   0:dt:(tfill);
+ 
+ t_reac_span = t_fill_span(end):dt:(treact + tfill);
+ 
+ t_w_span = t_reac_span(end):dt:(treact + tfill+tw);
+ t_set_span = t_w_span(end):dt:(treact + tfill+tw + tset );
+ t_eff_span = t_set_span(end):dt:(treact + tfill+tw + tset+teff );
     
-[t_fill, conc_fill] = ode15s(@dfill, t_fill_span, [conc_eff(end,1) conc_wit(end,2) conc_eff(end,2) ]);
+    dvvf_final = 0.5
+    
+    % t_fill_span =   (0 + (s-1)*t_eff_span(end)):dt:(tfill + (s-1)*t_eff_span(end));
+% t_reac_span = t_fill_span(end):dt:(treact + tfill+ t_fill_span(end));
+% t_w_span = t_reac_span(end):dt:(treact + tfill+tw +t_reac_span(end));
+% t_set_span = t_w_span(end):dt:(treact + tfill+tw + tset + t_w_span(end));
+% t_eff_span = t_set_span(end):dt:(treact + tfill+tw + tset+teff +t_set_span(end));
+%     
+
+    
+for s = 1:no_of_cycles
+   
+
+   
+    
+[t_fill(:,s), conc_fill] = ode15s(@dfill, t_fill_span, [conc_eff(end,1) 0.5 dvvf_final(end) ]);
+
 x_fill(:,s) = conc_fill(:,1);
 s_fill(:,s) = conc_fill(:,2);
 vvf_fill(:,s) = conc_fill(:,3);
-testaids = s
 
-reac_inital = [x_fill(end,s) s_fill(end,s)];
+
+
+
+reac_inital = [x_fill(end,s) s_fill(end,s)]
 
 [t_reac(:,s), conc_reac] = ode15s(@dreac, [t_reac_span], reac_inital);
 x_reac(:,s) = conc_reac(:,1);
@@ -74,13 +93,13 @@ x_eff(:,s) = conc_eff(:,1);
 vvf_eff(:,s) = conc_eff(:,2);
 
 
-t_vvf(:,s) = [t_fill(:,s);t_wit(:,s);t_eff(:,s)];
+t_vvf(:,s) = [t_fill(:,s) ; t_wit(:,s); t_eff(:,s)];
 dvvf_final = [conc_fill(:,3) ; conc_wit(:,3) ; conc_eff(:,2)];
 
 x_final(:,s) = [x_fill(:,s) ; x_reac(:,s) ;x_wit(:,s) ;x_eff(:,s)];
 t_final(:,s) = [t_fill(:,s); t_reac(:,s) ; t_wit(:,s) ; t_eff(:,s)] ;
 
-endtest = s
+
 end
 
 figure(1)
