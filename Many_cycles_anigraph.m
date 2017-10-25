@@ -105,7 +105,6 @@ s_final(:,s) = [s_fill(:,s) ; s_reac(:,s) ; s_wit(:,s)];
 ts_final(:,s) = [t_fill(:,s); t_reac(:,s) ; t_wit(:,s) ];
 tx_final(:,s) = [t_fill(:,s); t_reac(:,s) ; t_wit(:,s) ; t_eff(:,s)] ;
 
-
 end
 
 figure(1)
