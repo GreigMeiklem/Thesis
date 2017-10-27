@@ -67,7 +67,7 @@ vvf_fill(:,s) = conc_fill(:,3);
 
 
 
-reac_inital = [x_fill(end,s) s_fill(end,s)]
+reac_inital = [x_fill(end,s) s_fill(end,s)];
 
 [t_reac(:,s), conc_reac] = ode15s(@dreac, [t_reac_span], reac_inital);
 x_reac(:,s) = conc_reac(:,1);

@@ -112,3 +112,5 @@ hold on
 plot(t_vvf,dvvf_final)
 plot(ts_final , s_final)
 plot(tx_final , x_final)
+xlabel('time mins')
+ylabel('X Conc')
